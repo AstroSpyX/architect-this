@@ -27,7 +27,7 @@ In other words, if consistency is more important than availability, the system m
 
 **Important Note**: Systems typically choose between CP (consistency/partition tolerance) or AP (availability/partition tolerance). CA systems exist only in theoretical non-partitioned networks.
 
-CAP Theorem finds important application in the domain of Databases. Namely, two main subclasses SQL and NoSQL aim to emphasize different aspects of the system. SQL will remain highly consistent but may become unavailable during partitioning events, but NoSQL DBs will remain available with partial loss of consistency among data across nodes. 
+CAP Theorem finds important application in the domain of Databases. Namely, two main sub-classes SQL and NoSQL aim to emphasize different aspects of the system. SQL will remain highly consistent but may become unavailable during partitioning events, but NoSQL DBs will remain available with partial loss of consistency among data across nodes. 
 
 ## Main Database Categories
 
