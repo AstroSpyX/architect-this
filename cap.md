@@ -1,29 +1,33 @@
 # CAP Theorem 
 
+## What is it?
 
-What is it: it's a theoretical model that describes behavior or distributed systems (such as databases) in case of network partitioning.
+CAP Theorem is a theoretical model that describes the behavior of distributed systems (such as databases) in the presence of network partitions.
 
-Terminology:
+## Terminology:
 
-Distributed system: a collection of independent nodes connected by a communication network
-Network partitioning: a subset of the nodes becomes unreachable from the other nodes
-
-CAP Theorem operates with the following characteristics of a distributed system:
-
-(C): Consistency: a distribute systems is consistent if any of the available nodes will respond with the most recent data commited to the system or an explicit error.
-
-(A): Availability: any request received by an available node will receive a response
-
-(P): Partition tolerance: a system remains operational despite an arbitrary number of messages between the nodes are wither dropped or delayed
+- *Distributed system:* a collection of independent nodes connected via a communication network
+- *Network partitioning:* a situation when a (proper) subset of nodes become unreachable due to communication failure. The system splits into multiple isolated groups (partitions)
 
 
-CAP Theorem: formulation I
+## CAP Theorem operates with three core system properties:
+
+- *Consistency (C):* a distributed system is consistent if every read responds with the most recent write or an explicit error. All nodes see the same data at the same time
+
+- *Availability (A):* every read to an non-failing (available) node receives a non-error response, but there is no guarantee that the response contains the most recent data.
+
+- *Partition tolerance (B):* the system continues to operate despite an arbitrary number of messages lost, delayed or partitioning between nodes occurs
+
+## CAP Theorem – Two Formulations
+
+# formulation I
 
 For any distributed system it is impossible to simultaneously guarantee all three properties
 
-CAP Theorem: formulation II
+# formulation II (more practical)
 
-In case of network partition, any distributes systems will have to choose at most two properties.
+In case of network partition, any distributes systems must choose between Consistency or Availability but not both.
+
 
 Interpretation: CAP Theorem forces us to make trade-offs. Namely, In case of network partitioning, a distributes system will fall on one of 3 states:
 
