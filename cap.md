@@ -1,63 +1,67 @@
-# CAP Theorem 
+# CAP Theorem
 
 ## What is it?
 
-CAP Theorem is a theoretical model that describes the behavior of distributed systems (such as databases) in the presence of network partitions.
+The **CAP Theorem** is a theoretical framework that describes the limitations of distributed systems in the presence of **network partitions**. It states that a distributed system can **only guarantee two out of the three** desired properties: **Consistency**, **Availability**, and **Partition Tolerance**.
 
-## Terminology:
+---
 
-- *Distributed system:* a collection of independent nodes connected via a communication network
-- *Network partitioning:* a situation when a (proper) subset of nodes become unreachable due to communication failure. The system splits into multiple isolated groups (partitions)
+## Terminology
 
+- **Distributed system**: A collection of independent nodes connected by a communication network.
 
-## CAP Theorem operates with three core system properties:
+- **Network partition**: A condition in which a subset of nodes becomes unreachable from the rest due to communication failure, effectively splitting the system into isolated groups.
 
-- *Consistency (C):* a distributed system is consistent if every read responds with the most recent write or an explicit error. All nodes see the same data at the same time
+---
 
-- *Availability (A):* every read to an non-failing (available) node receives a non-error response, but there is no guarantee that the response contains the most recent data.
+## The Three Properties of CAP
 
-- *Partition tolerance (B):* the system continues to operate despite an arbitrary number of messages lost, delayed or partitioning between nodes occurs
+- **Consistency (C)**: Every read returns the **most recent write** or an **explicit error**. All nodes see the same data at the same time.
+
+- **Availability (A)**: Every request received by a **non-failing node** results in a **non-error response**, but it may not reflect the most recent write.
+
+- **Partition Tolerance (P)**: The system continues to operate **despite arbitrary message loss, delay, or reordering** between nodes—i.e., it handles network partitions gracefully.
+
+---
 
 ## CAP Theorem – Two Formulations
 
-# formulation I
+### Formulation I (Original)
 
-For any distributed system it is impossible to simultaneously guarantee all three properties
+> In any distributed system, it is **impossible** to simultaneously guarantee all three properties (C, A, and P).
 
-# formulation II (more practical)
+### Formulation II (Practical View)
 
-In case of network partition, any distributes systems must choose between Consistency or Availability but not both.
+> In the presence of a **network partition**, a distributed system must choose **either Consistency or Availability**, but not both.
 
+---
 
-Interpretation: CAP Theorem forces us to make trade-offs. Namely, In case of network partitioning, a distributes system will fall on one of 3 states:
+## Trade-offs: What happens during a partition
 
-CA - consistent and available (this is a theoretical state and in practice it is impossible to implement)
-CP - consistent and partition tolerant (but not available, response to an available node, may be delayed for a long time or dropped)
-AP - available and partition tolerant (but not consistent). An operational node in an available system will respond with data but it may not be the most recent data committed to the system (Consistency is broken)
+- **CA (Consistency + Availability)**: Works **only in the absence of partitions**. Assumes a perfectly reliable network, which is unrealistic in real-world distributed systems. Single-node databases (e.g., traditional RDBMS) can be considered CA systems.
 
+- **CP (Consistency + Partition Tolerance)**: The system ensures consistent data across partitions but may **deny requests** (sacrificing availability).  
+  **Examples**: MongoDB (with strong consistency), HBase.
 
+- **AP (Availability + Partition Tolerance)**: The system remains operational and responsive during partitions but may return **stale or inconsistent data** (sacrificing consistency).  
+  **Examples**: Cassandra, DynamoDB.
 
+---
 
+## Summary
 
+The CAP Theorem is a foundational principle in distributed systems design. It forces engineers to make informed trade-offs based on business and technical requirements:
 
-- CAP stands for Consistency, Availability, and Partitioning. CAP Theorem addresses trade-offs between these three properties in distributed systems (systems that are comprised of independent nodes that must agree on data or operations)
+- **Banking systems** prioritize **Consistency** over Availability.
+- **Social media feeds** prioritize **Availability** and responsiveness, even if consistency is eventual.
 
-The CAP Principle states: any distributed system can have at most two out of 3 properties.
+---
 
-Strict definitions:
+## Remarks
 
-Consistency - every read must return the most recent write or an error
-Availability - every request received by a non-failing node must return a response
-Partition tolerance - the system continues to operate despite arbitrary number of messages being dropped or delayed by the network connecting notes
+1. **Consistency is not binary.** Many systems support **eventual consistency**, where all nodes converge to the same state over time. Some databases (e.g., Cassandra) offer **tunable consistency** levels—such as `ONE`, `QUORUM`, `ALL`—to balance availability and data accuracy per operation.
 
-In the context of databases this theorems classifies distributed systems in 3 general classes
+2. **Availability varies in degree**. A system can be “Available” in the CAP sense but may not meet SLAs for **high availability (HA)**—i.e., very low downtime.
 
-CA - consistent, available, but not partition tolerant (in case of network partitioning occurs, system as a whole may become unavailable)
-CP - consistent, partition tolerant but not always available (in case of network failures, the system becomes unavailable - quorum among nodes must be established, since some nodes are not available, the system decided not to respond to data request)
-AP - available and partition toleran systems, may return date that was not commited during most recent write 
-
-
-
-RDBMS are typically built for consistency. This implies that they such systems can either be available to partition toleran
-NoSQL systems are typically partition tolerant and available (PA) sacrificing consistency.
-
+3. **PACELC** extends CAP by adding latency/consistency trade-offs even **when there is no partition**.  
+   > **PACELC**: *If* a partition occurs (P), a system must choose between **Availability (A)** or **Consistency (C)**. *Else* (when no partition), it must choose between **Latency (L)** and **Consistency (C)**.
