@@ -15,6 +15,7 @@ Choice of database is influenced by non-functional requirements.
 - **Consistency**: Written data is immediately available when reading
 - **OLAP**: Online analytics processing (refers to storage type optimized for heavy analytic queries)
 - **OLTP**: Online transaction processing (fast small transaction, e.g. place order, update user record)
+- **OTP**: One Table Pattern – a data modeling approach where all entity types are stored in a single table. Only DynamoDB explicitly promotes OTP as a best practice, due to its lack of joins and emphasis on query-based schema design.
 - **Sharding**: Spreading data across multiple nodes to spread load across instances
 - **TTL**: Time to live (object will self delete in 1 hour)
 
@@ -75,6 +76,29 @@ CAP Theorem finds important application in the domain of Databases. Namely, two 
 - Limited querying capabilities (primarily by key)
 - **Examples**: Redis (also used for caching), DynamoDB, Riak
 - **Use cases**: Session storage, shopping carts, user preferences, real-time leaderboards
+
+#### One Table Pattern (OTP) – DynamoDB only
+- OTP is a design pattern officially recommended for DynamoDB. Other databases (SQL, MongoDB, Cassandra, etc.) do not encourage or support OTP due to their data model and query capabilities.
+- In OTP, all entity types are stored in the same table.
+- You model data around known access patterns instead of entity relationships.
+- Items are differentiated by carefully structured primary keys, often namespaced:
+
+```text
+PK = USER#<user_id>
+SK = PROFILE
+PK = USER#<user_id>
+SK = ORDER#<order_id>
+```
+
+✅ **Pros**:
+- Enables fast, consistent access without joins (which DynamoDB doesn't support)
+- Great for relational or hierarchical data with predictable query paths
+- Simplifies scaling and avoids cross-table operations
+
+❌ **Cons**:
+- Requires you to define access patterns up front
+- Harder to model and maintain as access needs evolve
+- Not portable to other DBs and counterintuitive to traditional RDBMS users
 
 ### 3. Wide-column Stores
 - Data stored in column families rather than traditional rows
