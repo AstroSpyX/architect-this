@@ -100,6 +100,10 @@ SK = ORDER#<order_id>
 - Harder to model and maintain as access needs evolve
 - Not portable to other DBs and counterintuitive to traditional RDBMS users
 
+🔧 **Under the hood**
+DynamoDB is designed to consistently deliver single digit millisecond latency. 
+It achieves this by hashing partition keys to distribute items across partitions.
+Partitions are split once size or throughput limits are reached.
 ### 3. Wide-column Stores
 - Data stored in column families rather than traditional rows
 - Each row can have different columns, providing schema flexibility
@@ -150,7 +154,7 @@ SK = ORDER#<order_id>
 ### 5. Caching Solutions
 - Used to reduce load on resources for infrequently changing data
 - Typically come as key-value stores: key is typically built as a composition of API or Query params, values are structured as expected returned data
-- **Example**: Redis or Memcached (Redis is sufficient for system design interview)
+- **Example**: Redis or Memcached (Redis is the most widely used in-memory store - #1 key-value store on DB-Engines)
 - **Note**: Cache must never be used as a source of truth
 - Cache invalidation and TTL are important concerns
 - **Use cases**: Frequently accessed data, session storage, API response caching
